@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GitRepositoryTracker.Controllers
 {
+    /// <summary>
+    /// GitAPIController handles API endpoints related to topics and repositories.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class GitAPIController : ControllerBase
@@ -14,16 +17,20 @@ namespace GitRepositoryTracker.Controllers
         private readonly IGitAPIRepository _gitAPIRepository;
         private readonly IMapper _mapper;
         private readonly IGitHubAPIService _gitHubAPIService;
-        private readonly IRepositoryDeserializer _repositoryDeserializer;
 
-        public GitAPIController(IGitAPIRepository gitAPIRepository, IMapper mapper, IGitHubAPIService gitHubAPIClient, IRepositoryDeserializer repositoryDeserializer)
+        public GitAPIController(IGitAPIRepository gitAPIRepository, IMapper mapper, IGitHubAPIService gitHubAPIClient)
         {
             _gitAPIRepository = gitAPIRepository;
             _mapper = mapper;
             _gitHubAPIService = gitHubAPIClient;
-            _repositoryDeserializer = repositoryDeserializer;
+
         }
 
+        /// <summary>
+        /// Adds Topics to the database.
+        /// </summary>
+        /// <param name="topicDtos"> A collection of topics to add.</param>
+        /// <returns>A response indicating whether the operation was successful.</returns>
         [Authorize]
         [HttpPost("add_topics")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -44,6 +51,11 @@ namespace GitRepositoryTracker.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///Retrieves a repository by its ID. 
+        /// </summary>
+        /// <param name="id"> ID of the repository to be retrieved</param>
+        /// <returns>A response containing the repository DTO or an error message.</returns>
         [Authorize]
         [HttpGet("repository/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -63,6 +75,11 @@ namespace GitRepositoryTracker.Controllers
             return Ok(repositoryDto);
         }
 
+        /// <summary>
+        /// Retrieves a topic by its ID.
+        /// </summary>
+        /// <param name="id">ID of the topic to be retrieved</param>
+        /// <returns>A response containing the topic DTO or an error message.</returns>
         [Authorize]
         [HttpGet("gettopic/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -82,11 +99,18 @@ namespace GitRepositoryTracker.Controllers
             return Ok(topicDto);
         }
 
+        /// <summary>
+        /// Adds repositories to the database based on the provided parameters.
+        /// </summary>
+        /// <param name="size">The size in KBs of the repositories to retrieve.</param>
+        /// <param name="page">The page number to retrieve.</param>
+        /// <param name="perPage">The number of repositories per page.</param>
+        /// <returns>A response indicating whether the operation was successful.</returns>
         [Authorize]
         [HttpPost("repositories")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]      
-        [ProducesResponseType(StatusCodes.Status404NotFound)]        
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddRepositories(int size, int page, int perPage)
         {

@@ -10,8 +10,10 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Octokit;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GitHubRepositoryTracker", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GitHubRepositoryTracker", Version = "v1", Description = "An ASP.NET Core API that pulls Github repository data stored in Azure SQL Database." });
 
     // Add JWT authentication security scheme.
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -53,6 +55,10 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 
 // Add hosted services and AutoMapper.
@@ -89,14 +95,12 @@ builder.Services.AddScoped<IUIGenericRepository, UIRepository>();
 
 builder.Services.AddScoped<IGitHubAPIService, GitHubAPIService>();
 
-builder.Services.AddScoped<IRepositoryDeserializer, RepositoryDeserializer>();
-
 builder.Services.AddScoped<IGitAPIRepository, GitAPIRepository>();
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Configure caching and Identity.
-builder.Services.AddScoped<IMemoryCache, MemoryCache>();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
