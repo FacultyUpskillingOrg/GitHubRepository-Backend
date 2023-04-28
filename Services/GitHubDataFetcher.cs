@@ -23,10 +23,31 @@ namespace GitRepositoryTracker.Services
             _logger = logger;
 
             // Load configuration values
-            _size = configuration.GetValue<int>("GitHubDataFetcherSettings:Size");
-            _page = configuration.GetValue<int>("GitHubDataFetcherSettings:Page");
-            _perPage = configuration.GetValue<int>("GitHubDataFetcherSettings:PerPage");
-            _fetchInterval = TimeSpan.FromMinutes(configuration.GetValue<double>("GitHubDataFetcherSettings:FetchIntervalInHours"));
+            // Load configuration values
+            if (!int.TryParse(configuration["GitHubDataFetcherSettings:Size"], out _size))
+            {
+                _logger.LogError("Invalid value for 'GitHubDataFetcherSettings:Size': {Value}", configuration["GitHubDataFetcherSettings:Size"]);
+                throw new InvalidOperationException("Invalid value for 'GitHubDataFetcherSettings:Size'");
+            }
+
+            if (!int.TryParse(configuration["GitHubDataFetcherSettings:Page"], out _page))
+            {
+                _logger.LogError("Invalid value for 'GitHubDataFetcherSettings:Page': {Value}", configuration["GitHubDataFetcherSettings:Page"]);
+                throw new InvalidOperationException("Invalid value for 'GitHubDataFetcherSettings:Page'");
+            }
+
+            if (!int.TryParse(configuration["GitHubDataFetcherSettings:PerPage"], out _perPage))
+            {
+                _logger.LogError("Invalid value for 'GitHubDataFetcherSettings:PerPage': {Value}", configuration["GitHubDataFetcherSettings:PerPage"]);
+                throw new InvalidOperationException("Invalid value for 'GitHubDataFetcherSettings:PerPage'");
+            }
+
+            if (!double.TryParse(configuration["GitHubDataFetcherSettings:FetchIntervalInHours"], out double fetchIntervalInHours))
+            {
+                _logger.LogError("Invalid value for 'GitHubDataFetcherSettings:FetchIntervalInHours': {Value}", configuration["GitHubDataFetcherSettings:FetchIntervalInHours"]);
+                throw new InvalidOperationException("Invalid value for 'GitHubDataFetcherSettings:FetchIntervalInHours'");
+            }
+            _fetchInterval = TimeSpan.FromHours(fetchIntervalInHours);
         }
 
         // Start the periodic data fetcher
