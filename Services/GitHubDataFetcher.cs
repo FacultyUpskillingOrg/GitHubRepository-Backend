@@ -8,13 +8,13 @@ namespace GitRepositoryTracker.Services
 {
     public class GitHubDataFetcher : IHostedService, IDisposable
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly ILogger<GitHubDataFetcher> _logger;
-        private Timer _timer;
-        private readonly int _size;
-        private readonly int _page;
-        private readonly int _perPage;
-        private readonly TimeSpan _fetchInterval;
+        public IServiceScopeFactory _serviceScopeFactory;
+        public ILogger<GitHubDataFetcher> _logger;
+        public Timer _timer;
+        public int _size;
+        public int _page;
+        public int _perPage;
+        public TimeSpan _fetchInterval;
 
         // Constructor for the GitHubDataFetcher service
         public GitHubDataFetcher(IServiceScopeFactory serviceScopeFactory, IConfiguration configuration, ILogger<GitHubDataFetcher> logger)

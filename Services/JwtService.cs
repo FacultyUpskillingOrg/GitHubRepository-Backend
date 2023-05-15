@@ -10,8 +10,8 @@ namespace GitRepositoryTracker.Services
 {
     public class JwtService: IJwtService
     {
-        private const int EXPIRATION_MINUTES = 300;
-        private readonly IConfiguration _configuration;
+        public const int EXPIRATION_MINUTES = 300;
+        public IConfiguration _configuration;
 
         public JwtService(IConfiguration configuration)
         {
@@ -37,7 +37,7 @@ namespace GitRepositoryTracker.Services
             };
         }
 
-        private JwtSecurityToken CreateJwtToken(Claim[] claims, SigningCredentials credentials, DateTime expiration) =>
+        public JwtSecurityToken CreateJwtToken(Claim[] claims, SigningCredentials credentials, DateTime expiration) =>
             new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
@@ -46,7 +46,7 @@ namespace GitRepositoryTracker.Services
                 signingCredentials: credentials
             );
 
-        private Claim[] CreateClaims(IdentityUser user) =>
+        public Claim[] CreateClaims(IdentityUser user) =>
             new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -56,7 +56,7 @@ namespace GitRepositoryTracker.Services
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-        private SigningCredentials CreateSigningCredentials() =>
+        public SigningCredentials CreateSigningCredentials() =>
             new SigningCredentials(
                 new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])

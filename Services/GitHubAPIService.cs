@@ -8,8 +8,8 @@ namespace GitRepositoryTracker.Services
     public class GitHubAPIService : IGitHubAPIService
     {
 
-        private readonly IGitHubClient _gitHubClient;
-        private IMemoryCache _memoryCache;
+        public IGitHubClient _gitHubClient;
+        public IMemoryCache _memoryCache;
         
         public GitHubAPIService(IGitHubClient gitHubClient, IMemoryCache memoryCache)
         {

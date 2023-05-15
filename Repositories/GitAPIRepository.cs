@@ -10,8 +10,8 @@ namespace GitRepositoryTracker.Repositories
 {
     public class GitAPIRepository : IGitAPIRepository
     {
-        private readonly GitRepoContext _context;
-        private readonly IMapper _mapper;
+        public  GitRepoContext _context;
+        public  IMapper _mapper;
 
         public GitAPIRepository(GitRepoContext gitRepoContext, IMapper mapper)
         {
