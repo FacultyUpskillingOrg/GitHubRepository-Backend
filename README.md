@@ -12,24 +12,66 @@ sort them in ascending or descending order based on the provided criteria.
 The backend is built using ASP.NET Core Web API, while the frontend is developed
 using ASP.NET Core MVC. Both applications will be hosted on Azure App Service.
 
+# Software dependencies
+
++ .NET 6.0 or higher
++ SQL Server 2019 or higher(for the database)
++ Visual Studio 2022
+
 # Getting Started
 
 Follow these steps to get the code up and running on your system:
 
-# Installation process
+## Installation process
 
 1. Clone the repository using git clone [repository-url](https://github.com/FacultyUpskillingOrg/GitHubRepository-Backend.git)
 2. Navigate to the project folder and open the solution file in Visual Studio.
+3. Create a json file inside GitHubRepoTrackerBE and name it appsettings.json and update it as below.
 
-# Software dependencies
 
-.NET 6.0 or higher
-SQL Server 2019 or higher(for the database)
-Visual Studio 2022
 
-# Configuration settings
+## Configuration settings
 
-Make sure to update the following settings in the [`appsettings.json`](appsettings.json) file according to your environment:
+### appsettings.json format
+
+```
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "your_database_connection_string_here"
+  },
+  "GithubSettings": {
+    "GitHubAccessToken": "your_github_access_token_here"
+  },
+  "Jwt": {
+    "Key": "your_jwt_key_here",
+    "Issuer": "your_jwt_issuer_here",
+    "Audience": "your_jwt_audience_here",
+    "Subject": "JWT for GitRepositoryTracker"
+  },
+  "GitHubDataFetcherSettings": {
+    "Size": "Repository size in KBs",
+    "Page": "Number of pages to be returned",
+    "PerPage": "Number of items per page",
+    "FetchIntervalInMinutes": "Periodic interval in hours"
+  },
+  "AllowedHosts": "*",
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "ClientId": "{your-web-api-client-id}",
+    "TenantId": "{your-tenant-id}",
+    "Domain": "{your-domain}",
+    "Audience": "{your-web-api-client-id}"
+  }
+}
+```
+
+Make sure to update the following settings in the appsettings.json file according to your environment:
 
 - **ConnectionStrings:DefaultConnection** - Update with your database connection string.
 - **GithubSettings:GitHubAccessToken** - Provide your GitHub Personal Access Token.
@@ -49,10 +91,6 @@ Make sure to update the following settings in the [`appsettings.json`](appsettin
 -**NOTE** :The above settings are used to fetch the repositories from GitHub API. The default values are set to fetch 100 repositories with size greater than 100KBs. The periodic interval is set to 24 hours. You can change these values according to your requirements.
 The settings are to be used for local testing, ensure you set the appropriate values in the Azure App Service configuration settings when deploying the application.
 Do not push the secrets to the repository.
-
-# Latest releases
-
-Check the [releases](https://dev.azure.com/MicrosoftLeapClassroom/GitRepositoryTracker/_release) page for the latest version of the application.
 
 # API references
 
@@ -80,9 +118,3 @@ We welcome contributions from the community to make this code better. If you'd l
 5. Create a pull request targeting the main branch of the original repository.
 
 Please make sure to follow the code style and conventions used throughout the project. Add unit tests for your new features or bug fixes to ensure the stability and quality of the codebase.
-
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
