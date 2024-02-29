@@ -92,6 +92,17 @@ Make sure to update the following settings in the appsettings.json file accordin
 The settings are to be used for local testing, ensure you set the appropriate values in the Azure App Service configuration settings when deploying the application.
 Do not push the secrets to the repository.
 
+## Setting up local SQL Database
+### Installation
++ Install SQL Server 2019 or higher and [SQL Server Management Studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16)
++ Create a database 
+
+### Migrations
+Note: Make sure to update the sql connection string with your local database connection string.
++ Open the package manager console on you your Visual studio with your project open
++ Run ``` Add-Migration InitialCreate``` to add migration
++ Run ``` Update-Database``` to update the database
+
 # API references
 
 Refer to the [GitHub API documentation](https://docs.github.com/en/rest?apiVersion=2022-11-28) for more information on the API used in this project.
