@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
+var allowSpecificOrigins = "_allowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -69,7 +70,7 @@ builder.Services.AddAutoMapper(typeof(MappingConfig));
 // Configure database connection.
 builder.Services.AddDbContext<GitRepoContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), options =>
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SQL_CONNECTION_STRING"), options =>
     {
         options.EnableRetryOnFailure();
         options.CommandTimeout(300);
@@ -116,6 +117,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<GitRepoContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddApplicationInsightsTelemetry();
 // Configure JWT authentication.
 builder.Services.AddAuthentication(options =>
 {
@@ -136,16 +138,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(allowSpecificOrigins,
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
 // Configure Swagger and Swagger UI.
 app.UseSwagger();
-
-app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                );
 
 app.UseSwaggerUI(c =>
 {
@@ -154,6 +161,8 @@ app.UseSwaggerUI(c =>
 
 // Enable HTTPS redirection.
 app.UseHttpsRedirection();
+
+app.UseCors(allowSpecificOrigins);
 
 // Configure authentication and authorization.
 app.UseAuthentication();
