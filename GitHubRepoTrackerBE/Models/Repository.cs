@@ -4,7 +4,7 @@
     {
         public string RepositoryId { get; set; }
         public string RepositoryName { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; }
         public string Url { get; set; }
         public int StargazersCount { get; set; }
         public int ForksCount { get; set; }
