@@ -43,7 +43,7 @@ Follow these steps to get the code up and running on your system:
     }
   },
   "ConnectionStrings": {
-    "DefaultConnection": "your_database_connection_string_here"
+    "SQL_CONNECTION_STRING": "Server=[your SQL server name];Database=[Database name];TrustServerCertificate=True;Trusted_Connection=True;MultipleActiveResultSets=True"
   },
   "GithubSettings": {
     "GitHubAccessToken": "your_github_access_token_here"
