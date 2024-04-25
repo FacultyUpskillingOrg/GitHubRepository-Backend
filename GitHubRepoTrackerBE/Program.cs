@@ -117,7 +117,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<GitRepoContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddApplicationInsightsTelemetry();
 // Configure JWT authentication.
 builder.Services.AddAuthentication(options =>
 {
