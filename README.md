@@ -58,16 +58,9 @@ Follow these steps to get the code up and running on your system:
     "Size": "Repository size in KBs",
     "Page": "Number of pages to be returned",
     "PerPage": "Number of items per page",
-    "FetchIntervalInMinutes": "Periodic interval in hours"
+    "FetchIntervalInHours": "Periodic interval in hours"
   },
   "AllowedHosts": "*",
-  "AzureAd": {
-    "Instance": "https://login.microsoftonline.com/",
-    "ClientId": "{your-web-api-client-id}",
-    "TenantId": "{your-tenant-id}",
-    "Domain": "{your-domain}",
-    "Audience": "{your-web-api-client-id}"
-  }
 }
 ```
 
